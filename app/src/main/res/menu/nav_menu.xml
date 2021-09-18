@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+       android:title="App1"
+        android:id="@+id/app1"
+        android:icon="@drawable/circle_blue"
+        />
+    <item
+        android:title="App2"
+        android:id="@+id/app2"
+        android:icon="@drawable/circle_blue"
+        />
+    <item
+        android:title="App3"
+        android:id="@+id/app3"
+        android:icon="@drawable/circle_blue"
+        />
+</menu>

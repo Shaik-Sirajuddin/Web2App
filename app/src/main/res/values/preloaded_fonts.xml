@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="preloaded_fonts" translatable="false">
+        <item>@font/asul</item>
+        <item>@font/biryani</item>
+        <item>@font/halant</item>
+        <item>@font/halant_light</item>
+    </array>
+</resources>
