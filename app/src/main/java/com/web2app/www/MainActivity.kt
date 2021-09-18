@@ -18,11 +18,12 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.Lifecycle
+import me.ibrahimsn.lib.SmoothBottomBar
 import java.io.File
 
 
 class MainActivity : AppCompatActivity(),AppFragment.DoubleClick {
-    private lateinit var bottomNav:BottomNavigationView
+    private lateinit var bottomNav:SmoothBottomBar
     private val app1 = AppFragment()
     private val app2 = AppFragment()
     private val app3 = AppFragment()
@@ -33,8 +34,8 @@ class MainActivity : AppCompatActivity(),AppFragment.DoubleClick {
         setContentView(R.layout.activity_main)
         supportActionBar?.hide()
         bottomNav = findViewById(R.id.bottomNav)
-        bottomNav.setOnItemSelectedListener { item->
-           return@setOnItemSelectedListener itemSelected(item)
+        bottomNav.setOnItemSelectedListener { pos->
+            itemSelected(pos)
         }
         bottomNav.setOnItemReselectedListener {
             reselected()
@@ -72,15 +73,15 @@ class MainActivity : AppCompatActivity(),AppFragment.DoubleClick {
         }
     }
 
-    private fun itemSelected(item:MenuItem):Boolean{
+    private fun itemSelected(pos:Int):Boolean{
       try {
           val manager = supportFragmentManager
-          if (item.itemId == R.id.app1) {
+          if (pos == 0) {
               supportFragmentManager.beginTransaction().hide(currentFragment).show(app1).commit()
               manager.beginTransaction().setMaxLifecycle(currentFragment, Lifecycle.State.STARTED).commit()
               manager.beginTransaction().setMaxLifecycle(app1, Lifecycle.State.RESUMED).commit()
               currentFragment = app1
-          } else if (item.itemId == R.id.app2) {
+          } else if (pos == 1) {
               supportFragmentManager.beginTransaction().hide(currentFragment).show(app2).commit()
               manager.beginTransaction().setMaxLifecycle(currentFragment, Lifecycle.State.STARTED).commit()
               manager.beginTransaction().setMaxLifecycle(app2, Lifecycle.State.RESUMED).commit()

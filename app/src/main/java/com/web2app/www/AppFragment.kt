@@ -23,9 +23,11 @@ class AppFragment: Fragment() {
     private var listener:DoubleClick? = null
     var toast:Toast? = null
     var clearHistory = false
+    var isLoading = false
     private var flag = false
     lateinit var progressBar:ProgressBar
     lateinit var chromeClient: MainActivity.MyChrome
+    val user_agent= "Mozilla/5.0 (Linux; Android 4.1.1; Galaxy Nexus Build/JRO03C) AppleWebKit/535.19 (KHTML, like Gecko) Chrome/18.0.1025.166 Mobile Safari/535.19"
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -98,6 +100,11 @@ class AppFragment: Fragment() {
          webView?.settings?.setSupportZoom(true)
          webView?.settings?.builtInZoomControls = true
          webView?.settings?.displayZoomControls = false
+         //->1.1
+         webView?.settings?.loadWithOverviewMode = true
+         webView?.settings?.useWideViewPort = true
+         webView?.settings?.userAgentString = user_agent;
+         //<-1.1
          chromeClient = MainActivity.chromeClient!!
          webView?.webChromeClient = chromeClient
          //WebView Settings ->
@@ -217,8 +224,10 @@ class AppFragment: Fragment() {
     fun progressBarUpdate(newProgress:Int){
         if(newProgress == 100){
             progressBar.visibility = View.INVISIBLE
+            isLoading = false
         }
         else{
+            isLoading = true
             if(progressBar.visibility != View.VISIBLE) {
                 progressBar.visibility = View.VISIBLE
             }
