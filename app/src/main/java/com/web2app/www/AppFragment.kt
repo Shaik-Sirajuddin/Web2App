@@ -16,6 +16,7 @@ import android.content.Intent
 import android.net.Uri
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
+import androidx.core.widget.NestedScrollView
 
 class AppFragment: Fragment() {
     private  var webView:WebView? = null
@@ -23,11 +24,13 @@ class AppFragment: Fragment() {
     private var listener:DoubleClick? = null
     var toast:Toast? = null
     var clearHistory = false
-    var isLoading = false
     private var flag = false
+    private lateinit var about:TextView
+    private lateinit var down:ImageView
+    private lateinit var points:NestedScrollView
     lateinit var progressBar:ProgressBar
-    lateinit var chromeClient: MainActivity.MyChrome
-    val user_agent= "Mozilla/5.0 (Linux; Android 4.1.1; Galaxy Nexus Build/JRO03C) AppleWebKit/535.19 (KHTML, like Gecko) Chrome/18.0.1025.166 Mobile Safari/535.19"
+    private lateinit var chromeClient: MainActivity.MyChrome
+    private val user_agent= "Mozilla/5.0 (Linux; Android 4.1.1; Galaxy Nexus Build/JRO03C) AppleWebKit/535.19 (KHTML, like Gecko) Chrome/18.0.1025.166 Mobile Safari/535.19"
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -64,6 +67,9 @@ class AppFragment: Fragment() {
          if(savedInstanceState == null){
              flag = true
          }
+         about = view.findViewById(R.id.aboutContent)
+         down = view.findViewById(R.id.down)
+         points = view.findViewById(R.id.bulletPoints)
          val button: Button = view.findViewById(R.id.button)
          val editText: EditText = view.findViewById(R.id.url)
          //WebView Settings ->
@@ -76,12 +82,6 @@ class AppFragment: Fragment() {
              ) {
                  super.onReceivedError(view, request, error)
                  progressBar.visibility = View.INVISIBLE
-                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                     toast?.cancel()
-                     toast = Toast.makeText(context,error?.description.toString(),Toast.LENGTH_SHORT)
-                     toast?.show()
-                 }
-                 //goBack()
              }
 
              override fun onPageFinished(view: WebView?, url: String?) {
@@ -103,7 +103,7 @@ class AppFragment: Fragment() {
          //->1.1
          webView?.settings?.loadWithOverviewMode = true
          webView?.settings?.useWideViewPort = true
-         webView?.settings?.userAgentString = user_agent;
+         webView?.settings?.userAgentString = user_agent
          //<-1.1
          chromeClient = MainActivity.chromeClient!!
          webView?.webChromeClient = chromeClient
@@ -123,6 +123,11 @@ class AppFragment: Fragment() {
                  Toast.makeText(context,"Please Enter A Valid URl",Toast.LENGTH_SHORT).show()
              }
          }
+         view.findViewById<ScrollView>(R.id.scrlView).setOnTouchListener(object:DoubleClick2(){
+             override fun onDoubleClick2(v: View?) {
+                 listener?.hideBar()
+             }
+         })
          view.setOnClickListener(object : DoubleClickListener() {
              override fun onDoubleClick(v: View?){
                  listener?.hideBar()
@@ -137,6 +142,12 @@ class AppFragment: Fragment() {
              val i = Intent(Intent.ACTION_VIEW)
              i.data = Uri.parse(url)
              startActivity(i)
+         }
+         about.setOnClickListener {
+             show()
+         }
+         down.setOnClickListener {
+             show()
          }
          val suggest = view.findViewById<TextView>(R.id.suggestion)
          suggest.setOnClickListener {
@@ -155,9 +166,22 @@ class AppFragment: Fragment() {
             if (ur != null) {
                 loadWebView(ur)
                 loadMainPage()
-                listener?.hideBar()
+                if(MainActivity.created) {
+                    listener?.hideBar()
+                    MainActivity.created = false
+                }
             }
             flag = false
+        }
+    }
+    private fun show(){
+        if(points.visibility == View.GONE){
+            points.visibility = View.VISIBLE
+            down.rotation = 270F
+        }
+        else{
+            points.visibility =View.GONE
+            down.rotation = 90F
         }
     }
     private fun suggestIntent() {
@@ -224,10 +248,8 @@ class AppFragment: Fragment() {
     fun progressBarUpdate(newProgress:Int){
         if(newProgress == 100){
             progressBar.visibility = View.INVISIBLE
-            isLoading = false
         }
         else{
-            isLoading = true
             if(progressBar.visibility != View.VISIBLE) {
                 progressBar.visibility = View.VISIBLE
             }

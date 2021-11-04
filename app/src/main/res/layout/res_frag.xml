@@ -3,12 +3,18 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background=" #171515">
-
+    android:background="#171515">
+<ScrollView
+    android:id="@+id/scrlView"
+    android:layout_width="match_parent"
+    android:layout_height="0dp"
+    app:layout_constraintTop_toBottomOf="@id/ProgressBar"
+    app:layout_constraintBottom_toBottomOf="parent"
+    >
  <androidx.constraintlayout.widget.ConstraintLayout
      android:id="@+id/layoutToHide"
      android:layout_width="match_parent"
-     android:layout_height="match_parent"
+     android:layout_height="0dp"
      app:layout_constraintTop_toTopOf="parent">
 
   <TextView
@@ -32,7 +38,7 @@
       android:layout_height="wrap_content"
       android:layout_marginTop="20dp"
       android:fontFamily="@font/asul"
-      android:text="Use Any Website As App"
+      android:text="@string/use_any_website_as_app"
       android:textAlignment="center"
       android:textColor="@color/white"
       android:textSize="20sp"
@@ -82,11 +88,99 @@
       android:layout_height="wrap_content"
       android:layout_margin="10dp"
       android:backgroundTint="#25D366"
+      android:fontFamily="@font/asap_medium"
       android:padding="10dp"
       android:text="@string/launch_app"
+      android:textColor="#FFFFFF"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toBottomOf="@+id/cardView" />
+
+  <androidx.cardview.widget.CardView
+      android:id="@+id/aboutCard"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="10dp"
+      android:layout_marginTop="40dp"
+      android:layout_marginEnd="10dp"
+      android:layout_marginBottom="10dp"
+      app:cardBackgroundColor="#FF0057"
+      app:cardCornerRadius="3dp"
+      app:cardElevation="100dp"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@+id/button"
+      app:layout_constraintBottom_toTopOf="@id/guideline2"
+      >
+
+   <androidx.constraintlayout.widget.ConstraintLayout
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content"
+       >
+
+    <TextView
+        android:id="@+id/aboutContent"
+        android:gravity="top"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="2dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginEnd="40dp"
+        android:layout_marginBottom="2dp"
+        android:background="@color/white"
+        android:fontFamily="@font/asap_medium"
+        android:padding="7dp"
+        android:text="@string/how_to_use_app"
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/down"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginEnd="2dp"
+        android:background="@color/white"
+        android:padding="5dp"
+        android:rotation="90"
+        android:src="@drawable/ic_baseline_send_24"
+        app:layout_constraintBottom_toBottomOf="@id/aboutContent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/aboutContent"
+        app:layout_constraintTop_toTopOf="@id/aboutContent"
+        app:tint="#171515" />
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/bulletPoints"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintHeight_max="200dp"
+        android:layout_marginTop="1dp"
+        android:layout_marginBottom="2dp"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/aboutContent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        >
+
+     <TextView
+         android:layout_width="match_parent"
+         android:layout_height="wrap_content"
+         android:layout_marginStart="2dp"
+         android:layout_marginEnd="2dp"
+         android:background="#555252"
+         android:fontFamily="@font/asap_medium"
+         android:fontFeatureSettings="\"
+         android:lineSpacingExtra="2dp"
+         android:padding="10dp"
+         android:text="@string/how_to"
+         android:textColor="@color/white"
+         android:textSize="15sp" />
+    </androidx.core.widget.NestedScrollView>
+   </androidx.constraintlayout.widget.ConstraintLayout>
+  </androidx.cardview.widget.CardView>
 
   <TextView
       android:id="@+id/hint_text"
@@ -101,37 +195,52 @@
       android:textSize="14sp"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toBottomOf="@+id/button" />
+      app:layout_constraintTop_toBottomOf="@+id/guideline2" />
 
-  <TextView
-      android:id="@+id/suggestion"
+  <androidx.cardview.widget.CardView
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:layout_marginStart="10dp"
       android:layout_marginTop="50dp"
       android:layout_marginEnd="10dp"
-      android:background="#3F51B5"
-      android:padding="12dp"
-      android:text="@string/write_suggestion"
-      android:textAlignment="center"
-      android:textColor="@color/white"
-      android:textSize="14sp"
+      app:cardCornerRadius="5dp"
+      app:cardElevation="70dp"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toBottomOf="@id/hint_text" />
- </androidx.constraintlayout.widget.ConstraintLayout>
+      app:layout_constraintTop_toBottomOf="@id/hint_text">
 
+   <TextView
+       android:id="@+id/suggestion"
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content"
+       android:layout_margin="1dp"
+       android:background="#FF0057"
+       android:fontFamily="@font/amaranth"
+       android:padding="12dp"
+       android:text="@string/write_suggestion"
+       android:textAlignment="center"
+       android:textColor="@color/white"
+       android:textSize="14sp" />
+  </androidx.cardview.widget.CardView>
+  <androidx.constraintlayout.widget.Guideline
+      android:id="@+id/guideline2"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:orientation="horizontal"
+      app:layout_constraintGuide_percent="0.75"/>
+ </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>
  <ProgressBar
+     android:id="@+id/ProgressBar"
+     style="@style/Widget.AppCompat.ProgressBar.Horizontal"
      android:layout_width="match_parent"
      android:layout_height="10dp"
-     android:id="@+id/ProgressBar"
-     android:visibility="invisible"
      android:elevation="100dp"
+     android:visibility="invisible"
      app:layout_constraintEnd_toEndOf="parent"
      app:layout_constraintStart_toStartOf="parent"
-     app:layout_constraintTop_toTopOf="parent"
-     style="@style/Widget.AppCompat.ProgressBar.Horizontal"
-     />
+     app:layout_constraintTop_toTopOf="parent" />
+
  <WebView
      android:id="@+id/webView"
      android:layout_width="match_parent"
@@ -140,6 +249,6 @@
      app:layout_constraintBottom_toBottomOf="parent"
      app:layout_constraintEnd_toEndOf="parent"
      app:layout_constraintStart_toStartOf="parent"
-     app:layout_constraintTop_toBottomOf="@id/ProgressBar"
-     />
+     app:layout_constraintTop_toBottomOf="@id/ProgressBar" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

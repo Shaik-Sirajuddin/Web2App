@@ -5,4 +5,7 @@
     <string name="enter_the_website_url_here">Enter The Website URL Here:</string>
     <string name="https_www_google_com">https:/www.google.com</string>
     <string name="launch_app">Launch App</string>
+    <string name="how_to"><br>\u27a1 Enter The Website Url Above\n</br><br>\u27a1 Click On Launch App Button \n</br><br>\u27a1 Then The Site Will Be Embeded In The App Giving You The Experience Of An App While Browsing \n</br><br>\u27a1 The Url Will Be Stored Offline , And The Same URL Is Loaded Again When You Reopen The App \n</br><br>\u27a1 The Difference Between Browser And This App Is That The Site is Auto Adjusted According To The Dimensions Of Your Device And Some Process Is Happens Behind The Scenes To Make The Site Feel Like An App\n</br><br>\u27a1 Happy Browsing</br></string>
+    <string name="how_to_use_app">How To Use App</string>
+    <string name="use_any_website_as_app">Use Any Website As App</string>
 </resources>

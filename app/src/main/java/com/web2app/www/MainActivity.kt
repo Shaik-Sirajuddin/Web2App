@@ -1,23 +1,27 @@
 package com.web2app.www
 
 
+import android.content.ContentValues.TAG
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.view.MenuItem
 import android.view.View
 import androidx.fragment.app.Fragment
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import android.widget.FrameLayout
 import android.webkit.WebChromeClient
 import android.graphics.BitmapFactory
 import android.graphics.Bitmap
 import android.webkit.WebView
-import android.widget.Toast
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
-import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.Lifecycle
+import com.google.android.material.snackbar.Snackbar
+import com.google.android.play.core.appupdate.AppUpdateManager
+import com.google.android.play.core.appupdate.AppUpdateManagerFactory
+import com.google.android.play.core.install.InstallStateUpdatedListener
+import com.google.android.play.core.install.model.AppUpdateType
+import com.google.android.play.core.install.model.InstallStatus
+import com.google.android.play.core.install.model.UpdateAvailability
 import me.ibrahimsn.lib.SmoothBottomBar
 import java.io.File
 
@@ -27,6 +31,7 @@ class MainActivity : AppCompatActivity(),AppFragment.DoubleClick {
     private val app1 = AppFragment()
     private val app2 = AppFragment()
     private val app3 = AppFragment()
+    private var appUpdateManager: AppUpdateManager? = null
     private lateinit var currentFragment: Fragment
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,6 +52,7 @@ class MainActivity : AppCompatActivity(),AppFragment.DoubleClick {
                     progress(newProgress)
                 }
             }
+            created = true
             supportFragmentManager.beginTransaction().add(R.id.fragCon2, app2).setMaxLifecycle(app2,Lifecycle.State.CREATED).hide(app2).commit()
             supportFragmentManager.beginTransaction().add(R.id.fragCon3, app3).setMaxLifecycle(app3,Lifecycle.State.CREATED).hide(app3).commit()
             supportFragmentManager.beginTransaction().add(R.id.fragCon1,app1).show(app1).commit()
@@ -56,6 +62,39 @@ class MainActivity : AppCompatActivity(),AppFragment.DoubleClick {
             Log.e("some",e.message.toString())
         }
         path()
+        appUpdateManager = AppUpdateManagerFactory.create(this)
+        appUpdateManager?.registerListener(listener)
+        checkUpdate()
+    }
+    private val listener: InstallStateUpdatedListener = InstallStateUpdatedListener { installState ->
+        if (installState.installStatus() == InstallStatus.DOWNLOADED) {
+            val view = window.decorView.findViewById<View>(android.R.id.content)
+            val snackbar = Snackbar.make(view,"The Latest Of The App is Just Downloaded",Snackbar.LENGTH_INDEFINITE)
+            snackbar.setAction("Install Now"){
+                 appUpdateManager!!.completeUpdate()
+            }
+            snackbar.show()
+        }
+    }
+    private fun checkUpdate() {
+        val appUpdateInfoTask = appUpdateManager?.appUpdateInfo
+
+        appUpdateInfoTask?.addOnSuccessListener { appUpdateInfo ->
+            if (appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE
+                && appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.FLEXIBLE)) {
+
+                appUpdateManager?.startUpdateFlowForResult(appUpdateInfo,
+                    AppUpdateType.FLEXIBLE,
+                    this,
+                    101)
+
+            }
+        }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        appUpdateManager?.unregisterListener(listener)
     }
     private fun progress(newProgress:Int) {
         val frag = currentFragment as AppFragment
@@ -177,6 +216,7 @@ class MainActivity : AppCompatActivity(),AppFragment.DoubleClick {
 
     companion object{
       var chromeClient:MyChrome? = null
+        var created = false
     }
 
     open inner class MyChrome : WebChromeClient() {
